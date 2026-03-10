@@ -6,7 +6,7 @@ public record PostDto(
         int id,
         String title,
         String content,
-        LocalDateTime createDate,
+        LocalDateTime createdDate,
         LocalDateTime modifyDate
 ) {
 }
