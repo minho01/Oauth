@@ -6,7 +6,6 @@ import com.back.domain.post.post.service.PostService;
 import com.back.global.rsData.RsData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,15 +41,14 @@ public class ApiV1PostController {
 
     @GetMapping("/{id}/delete")
     @ResponseBody
-    @Transactional
-    public RsData delete(
+    public RsData<PostDto> delete(
             @PathVariable int id
     ) {
 
         Post post = postService.findById(id).get();
         postService.deleteById(id);
 
-        return new RsData(
+        return new RsData<>(
                 "%d번 글이 삭제되었습니다.".formatted(id),
                 "204-1",
                 new PostDto(post)

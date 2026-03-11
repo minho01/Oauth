@@ -51,7 +51,7 @@ public class ApiV1CommentController {
     @GetMapping("/{commentId}/delete")
     @ResponseBody
     @Transactional
-    public RsData delete(
+    public RsData<CommentDto> delete(
             @PathVariable int postId,
             @PathVariable int commentId
     ) {
@@ -59,7 +59,7 @@ public class ApiV1CommentController {
         Comment comment = post.findCommentById(commentId).get();
         post.deleteComment(commentId);
 
-        return new RsData(
+        return new RsData<>(
                 "%d번 댓글이 삭제되었습니다.".formatted(commentId),
                 "204-1",
                 new CommentDto(comment)
