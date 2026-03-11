@@ -9,10 +9,7 @@ import com.back.global.rsData.RsData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -48,7 +45,7 @@ public class ApiV1CommentController {
         return new CommentDto(comment);
     }
 
-    @GetMapping("/{commentId}/delete")
+    @DeleteMapping("/{commentId}")
     @ResponseBody
     @Transactional
     public RsData<CommentDto> delete(
