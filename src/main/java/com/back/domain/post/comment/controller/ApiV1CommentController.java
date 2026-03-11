@@ -3,13 +3,18 @@ package com.back.domain.post.comment.controller;
 import com.back.domain.post.comment.dto.CommentDto;
 import com.back.domain.post.comment.entity.Comment;
 import com.back.domain.post.post.entity.Post;
+import com.back.domain.post.post.repository.PostRepository;
 import com.back.domain.post.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,6 +22,7 @@ import java.util.List;
 public class ApiV1CommentController {
 
     private final PostService postService;
+    private final PostRepository postRepository;
 
     @GetMapping
     @ResponseBody
@@ -45,13 +51,18 @@ public class ApiV1CommentController {
     @GetMapping("/{commentId}/delete")
     @ResponseBody
     @Transactional
-    public String delete(
+    public Map<String, Object> delete(
             @PathVariable int postId,
             @PathVariable int commentId
     ) {
         Post post = postService.findById(postId).get();
         post.deleteComment(commentId);
 
-        return "%d번 댓글이 삭제되었습니다.".formatted(commentId);
+        Map<String, Object> result = Map.of(
+                "msg", "%d번 댓글이 삭제되었습니다.".formatted(commentId),
+                "resultCode", "204-1"
+        );
+
+        return result;
     }
 }
