@@ -38,7 +38,7 @@ public class ApiV1PostController {
         return new PostDto(post);
     }
 
-    record postWriteReqBody(
+    record PostWriteReqBody(
             @Size(min = 2, max = 10, message = "03-title-제목은 2자 이상 10자 이하로 입력해주세요.")
             @NotBlank(message = "01-title-제목은 필수입니다.")
             String title,
@@ -46,16 +46,27 @@ public class ApiV1PostController {
             @NotBlank(message = "02-content-내용은 필수입니다.")
             @Size(min = 2, max = 100, message = "04-content-내용은 2자 이상 100자 이하로 입력해주세요.")
             String content
-    ){}
+    ) {
+    }
+
+    record PostWriteResBody(
+            PostDto postDto,
+            long postsCount
+    ) {
+    }
 
     @PostMapping
-    public RsData<PostDto> write(@RequestBody @Valid postWriteReqBody reqBody) {
+    public RsData<PostWriteResBody> write(@RequestBody @Valid PostWriteReqBody reqBody) {
         Post post = postService.write(reqBody.title, reqBody.content);
+        long postsCount = postService.count();
 
         return new RsData<>(
                 "%d번 글이 성공적으로 작성되었습니다.".formatted(post.getId()),
                 "201-1",
-                new PostDto(post)
+                new PostWriteResBody(
+                        new PostDto(post),
+                        postsCount
+                )
         );
     }
 
