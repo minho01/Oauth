@@ -22,7 +22,7 @@ public class ApiV1PostController {
         List<Post> result = postService.findAll();
 
         List<PostDto> postDtoList = result.stream()
-                .map(Post::toDto)
+                .map(PostDto::new)
                 .toList();
 
         return postDtoList;
