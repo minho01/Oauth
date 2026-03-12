@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -43,8 +45,24 @@ public class ApiV1PostControllerTest {
                 )
                 .andDo(print());
 
+        List<Post> posts = postRepository.findAll();
+
         resultActions
-                .andExpect(status().isOk()); //200
+                .andExpect(handler().handlerType(ApiV1PostController.class))
+                .andExpect(handler().methodName("list"))
+                .andExpect(status().isOk());
+
+        for (int i = 0; i < posts.size(); i++) {
+            Post post = posts.get(i);
+
+            // 단건 조회 검증
+            resultActions
+                    .andExpect(jsonPath("$[%d].id".formatted(i)).value(post.getId()))
+                    .andExpect(jsonPath("$[%d].createDate".formatted(i)).value(matchesPattern(post.getCreateDate().toString().replaceAll("0+$", "") + ".*")))
+                    .andExpect(jsonPath("$[%d].modifyDate".formatted(i)).value(matchesPattern(post.getModifyDate().toString().replaceAll("0+$", "") + ".*")))
+                    .andExpect(jsonPath("$[%d].title".formatted(i)).value(post.getTitle()))
+                    .andExpect(jsonPath("$[%d].content".formatted(i)).value(post.getContent()));
+        }
     }
 
     @Test
