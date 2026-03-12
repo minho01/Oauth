@@ -79,7 +79,7 @@ public class ApiV1PostController {
 
         return new RsData<>(
                 "%d번 글이 삭제되었습니다.".formatted(id),
-                "204-1"
+                "200-1"
         );
     }
 }
