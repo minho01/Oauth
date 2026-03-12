@@ -24,7 +24,7 @@ public class ApiV1PostController {
     public List<PostDto> list() {
         List<Post> result = postService.findAll();
 
-        List<PostDto> postDtoList = result.stream()
+        List<PostDto> postDtoList = result.reversed().stream()
                 .map(PostDto::new)
                 .toList();
 
