@@ -2,6 +2,7 @@ package com.back.domain.post.post.controller;
 
 import com.back.domain.post.post.entity.Post;
 import com.back.domain.post.post.repository.PostRepository;
+import com.back.domain.post.post.service.PostService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -30,6 +30,8 @@ public class ApiV1PostControllerTest {
 
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private PostService postService;
 
     @Test
     @DisplayName("글 다건 조회")
@@ -45,8 +47,35 @@ public class ApiV1PostControllerTest {
     }
 
     @Test
-    @DisplayName("글 생성")
+    @DisplayName("글 단건 조회")
     void t2() throws Exception {
+        int targetId = 1;
+
+        ResultActions resultActions = mvc
+                .perform(
+                        get("/api/v1/posts/%d".formatted(targetId))
+                )
+                .andDo(print());
+
+        resultActions
+                .andExpect(handler().handlerType(ApiV1PostController.class))
+                .andExpect(handler().methodName("detail"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.createDate").exists())
+                .andExpect(jsonPath("$.modifyDate").exists())
+                .andExpect(jsonPath("$.title").value("제목1"))
+                .andExpect(jsonPath("$.content").value("내용1"));
+
+//        Post post = postRepository.findById(targetId).get();
+//        resultActions
+//                .andExpect(jsonPath("$.title").value(post.getTitle()))
+//                .andExpect(jsonPath("$.content").value(post.getContent()));
+    }
+
+    @Test
+    @DisplayName("글 생성")
+    void t3() throws Exception {
         String title = "제목입니다";
         String content = "내용입니다";
 
@@ -69,7 +98,7 @@ public class ApiV1PostControllerTest {
 
     @Test
     @DisplayName("글 수정")
-    void t3() throws Exception {
+    void t4() throws Exception {
         int targetId = 1;
         String title = "제목 수정";
         String content = "내용 수정";
@@ -99,4 +128,5 @@ public class ApiV1PostControllerTest {
         assertThat(post.getTitle()).isEqualTo(title);
         assertThat(post.getContent()).isEqualTo(content);
     }
+
 }
