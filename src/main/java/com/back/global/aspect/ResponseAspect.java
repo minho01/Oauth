@@ -44,7 +44,7 @@ public class ResponseAspect {
 
         System.out.println("ResponseAspec 후처리");
         if(rst instanceof RsData rsData) {
-            int statusCode = 201;
+            int statusCode = rsData.getStatusCode();
             response.setStatus(statusCode);
         }
 
