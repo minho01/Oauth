@@ -87,7 +87,7 @@ public class ApiV1PostControllerTest {
     }
 
     @Test
-    @DisplayName("글 생성")
+    @DisplayName("글 작성")
     void t3() throws Exception {
         String title = "제목입니다";
         String content = "내용입니다";
@@ -106,7 +106,14 @@ public class ApiV1PostControllerTest {
                 .andDo(print());
 
         resultActions
-                .andExpect(status().isCreated());
+                .andExpect(handler().handlerType(ApiV1PostController.class))
+                .andExpect(handler().methodName("write"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.data.postDto.id").value(4))
+                .andExpect(jsonPath("$.data.postDto.createDate").exists())
+                .andExpect(jsonPath("$.data.postDto.modifyDate").exists())
+                .andExpect(jsonPath("$.data.postDto.title").value(title))
+                .andExpect(jsonPath("$.data.postDto.content").value(content));
     }
 
     @Test
