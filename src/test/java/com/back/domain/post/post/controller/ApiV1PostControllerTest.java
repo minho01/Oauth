@@ -137,8 +137,37 @@ public class ApiV1PostControllerTest {
     }
 
     @Test
-    @DisplayName("글 수정")
+    @DisplayName("글 작성, 제목이 입력되지 않은 경우")
     void t5() throws Exception {
+        String title = "";
+        String content = "내용입니다";
+
+        ResultActions resultActions = mvc
+                .perform(
+                        post("/api/v1/posts")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                        {
+                                            "title": "%s",
+                                            "content": "%s"
+                                        }
+                                        """.formatted(title, content))
+                )
+                .andDo(print());
+
+        resultActions
+                .andExpect(handler().handlerType(ApiV1PostController.class))
+                .andExpect(handler().methodName("write"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.resultCode").value("400-1"))
+                .andExpect(jsonPath("$.msg").value("title-NotBlank-01-title-제목은 필수입니다.\ntitle-Size-03-title-제목은 2자 이상 10자 이하로 입력해주세요."));
+
+
+    }
+
+    @Test
+    @DisplayName("글 수정")
+    void t6() throws Exception {
         int targetId = 1;
         String title = "제목 수정";
         String content = "내용 수정";
@@ -173,7 +202,7 @@ public class ApiV1PostControllerTest {
 
     @Test
     @DisplayName("글 삭제")
-    void t6() throws Exception {
+    void t7() throws Exception {
         int targetId = 1;
 
         ResultActions resultActions = mvc
