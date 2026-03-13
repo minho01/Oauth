@@ -6,6 +6,8 @@ import com.back.domain.post.post.entity.Post;
 import com.back.domain.post.post.repository.PostRepository;
 import com.back.domain.post.post.service.PostService;
 import com.back.global.rsData.RsData;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -18,12 +20,14 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/posts/{postId}/comments")
+@Tag(name = "ApiV1CommentController", description = "댓글 API")
 public class ApiV1CommentController {
 
     private final PostService postService;
     private final PostRepository postRepository;
 
     @GetMapping
+    @Operation(summary="댓글 다건 조회")
     public List<CommentDto> list(
             @PathVariable int postId
     ) {
@@ -38,6 +42,7 @@ public class ApiV1CommentController {
     }
 
     @GetMapping("/{commentId}")
+    @Operation(summary="글 단건 조회")
     public CommentDto detail(@PathVariable int postId, @PathVariable int commentId) {
         Post post = postService.findById(postId).get();
         Comment comment = post.findCommentById(commentId).get();
@@ -60,6 +65,7 @@ public class ApiV1CommentController {
 
     @PostMapping
     @Transactional
+    @Operation(summary="댓글 작성")
     public RsData<CommentWriteResBody> write(
             @PathVariable int postId,
             @RequestBody @Valid CommentWriteReqBody reqBody
@@ -81,6 +87,7 @@ public class ApiV1CommentController {
 
     @DeleteMapping("/{commentId}")
     @Transactional
+    @Operation(summary="댓글 삭제")
     public RsData<CommentDto> delete(
             @PathVariable int postId,
             @PathVariable int commentId
@@ -102,6 +109,7 @@ public class ApiV1CommentController {
 
     @PutMapping("/{commentId}")
     @Transactional
+    @Operation(summary="댓글 수정")
     public RsData<Void> modify(
             @PathVariable int postId,
             @PathVariable int commentId,
