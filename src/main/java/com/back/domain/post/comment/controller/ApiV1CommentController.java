@@ -95,4 +95,25 @@ public class ApiV1CommentController {
                 new CommentDto(comment)
         );
     }
+
+    record CommentModifyReqBody(
+            String content
+    ){}
+
+    @PutMapping("/{commentId}")
+    @Transactional
+    public RsData<Void> modify(
+            @PathVariable int postId,
+            @PathVariable int commentId,
+            @RequestBody CommentModifyReqBody reqBody
+    ) {
+
+        Post post = postService.findById(postId).get();
+        post.modifyComment(commentId, reqBody.content);
+
+        return new RsData<>(
+                "%d번 댓글이 수정되었습니다.".formatted(1),
+                "200-1"
+        );
+    }
 }
