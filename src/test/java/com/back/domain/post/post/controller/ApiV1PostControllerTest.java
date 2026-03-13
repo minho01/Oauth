@@ -55,7 +55,7 @@ public class ApiV1PostControllerTest {
     }
 
     @Test
-    @DisplayName("글 단건 조회")
+    @DisplayName("글 단건 조회 - 성공")
     void t2() throws Exception {
         int targetId = 1;
 
@@ -87,8 +87,26 @@ public class ApiV1PostControllerTest {
     }
 
     @Test
-    @DisplayName("글 작성")
+    @DisplayName("글 단건 조회 - 실패(존재하지 않는 글)")
     void t3() throws Exception {
+        int targetId = Integer.MAX_VALUE;
+
+        ResultActions resultActions = mvc
+                .perform(
+                        get("/api/v1/posts/%d".formatted(targetId))
+                )
+                .andDo(print());
+
+        resultActions
+                .andExpect(handler().handlerType(ApiV1PostController.class))
+                .andExpect(handler().methodName("detail"))
+                .andExpect(status().isNotFound());
+
+    }
+
+    @Test
+    @DisplayName("글 작성")
+    void t4() throws Exception {
         String title = "제목입니다";
         String content = "내용입니다";
 
@@ -120,7 +138,7 @@ public class ApiV1PostControllerTest {
 
     @Test
     @DisplayName("글 수정")
-    void t4() throws Exception {
+    void t5() throws Exception {
         int targetId = 1;
         String title = "제목 수정";
         String content = "내용 수정";
@@ -155,7 +173,7 @@ public class ApiV1PostControllerTest {
 
     @Test
     @DisplayName("글 삭제")
-    void t5() throws Exception {
+    void t6() throws Exception {
         int targetId = 1;
 
         ResultActions resultActions = mvc

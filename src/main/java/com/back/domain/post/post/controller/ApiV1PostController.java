@@ -33,6 +33,7 @@ public class ApiV1PostController {
 
     @GetMapping("/{id}")
     public PostDto detail(@PathVariable int id) {
+
         Post post = postService.findById(id).get();
         return new PostDto(post);
     }
