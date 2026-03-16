@@ -59,7 +59,8 @@ public class ApiV1CommentController {
     }
 
     record CommentWriteResBody(
-            CommentDto commentDto
+            CommentDto commentDto,
+            int totalCount
     ) {
     }
 
@@ -80,7 +81,8 @@ public class ApiV1CommentController {
                 "%d번 댓글이 생성되었습니다.".formatted(comment.getId()),
                 "201-1",
                 new CommentWriteResBody(
-                        new CommentDto(comment)
+                        new CommentDto(comment),
+                        2
                 )
         );
     }
