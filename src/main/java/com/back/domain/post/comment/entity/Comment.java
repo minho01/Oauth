@@ -1,5 +1,6 @@
 package com.back.domain.post.comment.entity;
 
+import com.back.domain.member.entity.Member;
 import com.back.domain.post.post.entity.Post;
 import com.back.global.entity.BaseEntity;
 import jakarta.persistence.Entity;
@@ -18,7 +19,11 @@ public class Comment extends BaseEntity {
     @ManyToOne
     private Post post;
 
-    public void update(String content) {
+    private Member author;
+
+    public Comment(Member author, String content, Post post) {
+        this.author = author;
         this.content = content;
+        this.post = post;
     }
 }
