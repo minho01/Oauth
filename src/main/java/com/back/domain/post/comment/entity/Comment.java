@@ -19,11 +19,16 @@ public class Comment extends BaseEntity {
     @ManyToOne
     private Post post;
 
+    @ManyToOne
     private Member author;
 
     public Comment(Member author, String content, Post post) {
         this.author = author;
         this.content = content;
         this.post = post;
+    }
+
+    public void update(String content) {
+        this.content = content;
     }
 }

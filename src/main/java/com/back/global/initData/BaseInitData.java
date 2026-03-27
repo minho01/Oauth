@@ -55,5 +55,9 @@ public class BaseInitData {
         if (memberService.count() > 0) {
             return;
         }
+        // DB가 비어있을 때 샘플 회원 생성
+        memberService.join("user1", "1234", "유저1");
+        memberService.join("user2", "1234", "유저2");
+        memberService.join("user3", "1234", "유저3");
     }
 }

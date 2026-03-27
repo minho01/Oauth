@@ -29,4 +29,8 @@ public class MemberService {
 //        같은 코드
         return memberRepository.findByUsername(username); // DB에서 가져오는 코드
     }
+
+    public Optional<Member> findByApiKey(String apiKey) {
+        return memberRepository.findByApiKey(apiKey);
+    }
 }

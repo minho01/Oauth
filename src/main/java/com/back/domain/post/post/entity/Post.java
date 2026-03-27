@@ -30,7 +30,7 @@ public class Post extends BaseEntity {
             orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    public Post(Member author,String title, String content) {
+    public Post(Member author, String title, String content) {
         this.author = author;
         this.title = title;
         this.content = content;
