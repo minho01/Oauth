@@ -15,6 +15,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
+// 컨트롤러 밖으로 나온 예외를 공통된 API 응답 형식으로 바꿔주는 전역 핸들러
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoSuchElementException.class)

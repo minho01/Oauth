@@ -23,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/posts/{postId}/comments")
 @Tag(name = "ApiV1CommentController", description = "댓글 API")
+// 게시글의 하위 리소스인 댓글을 다루는 중첩 REST 컨트롤러
 public class ApiV1CommentController {
 
     private final PostService postService;
@@ -67,6 +68,7 @@ public class ApiV1CommentController {
     ) {
     }
 
+    // 현재 실습 단계에서는 댓글 작성자를 임시로 user1에 고정해두었다.
     @PostMapping
     @Transactional
     @Operation(summary="댓글 작성")

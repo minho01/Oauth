@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @RequiredArgsConstructor
+// RsData의 resultCode를 실제 HTTP 상태코드로 반영하는 공통 후처리 AOP
 public class ResponseAspect {
 
     private final HttpServletResponse response;

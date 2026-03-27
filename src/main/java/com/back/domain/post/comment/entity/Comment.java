@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+// 댓글은 어떤 게시글에 속하고, 누가 작성했는지를 함께 가지는 하위 엔티티
 public class Comment extends BaseEntity {
     private String content;
 

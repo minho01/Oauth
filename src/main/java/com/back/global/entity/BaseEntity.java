@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @Getter
 @EntityListeners(AuditingEntityListener.class)
+// 모든 엔티티가 공통으로 사용하는 PK/생성일/수정일을 모아둔 베이스 클래스
 public abstract class BaseEntity {
 
     @Id

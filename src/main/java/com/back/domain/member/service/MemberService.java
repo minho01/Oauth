@@ -10,11 +10,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+// 회원 관련 비즈니스 규칙을 모으는 서비스 계층
 public class MemberService {
 
     private final MemberRepository memberRepository;
 
     public Member join(String username, String password, String nickname) {
+        // 중복 username 검사는 HTTP 계층이 아니라 회원가입 규칙이므로 서비스에서 처리한다.
         findByUsername(username).ifPresent(
                 m -> {
                     throw new ServiceException("409-1", "이미 사용중인 아이디입니다.");
@@ -31,6 +33,7 @@ public class MemberService {
     }
 
     public Optional<Member> findByUsername(String username) {
+        // Spring Data JPA가 메서드 이름만으로 username 조회 쿼리를 만들어준다.
 //        return memberRepository.findAll().stream()
 //                .filter(m -> m.getUsername().equals(username))
 //                .findFirst();

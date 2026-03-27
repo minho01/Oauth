@@ -23,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/posts")
 @Tag(name = "ApiV1PostController", description = "글 API")
+// 게시글 CRUD와 작성자 식별(apiKey)을 처리하는 REST 컨트롤러
 public class ApiV1PostController {
 
     private final PostService postService;
@@ -65,6 +66,7 @@ public class ApiV1PostController {
     ) {
     }
 
+    // 글 작성자는 로그인 후 받은 apiKey로 식별한다.
     @PostMapping
     @Operation(summary="글 작성")
     public RsData<PostWriteResBody> write(@RequestBody @Valid PostWriteReqBody reqBody,

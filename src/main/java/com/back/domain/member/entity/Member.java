@@ -11,6 +11,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @NoArgsConstructor
+// 회원가입, 로그인, 글 작성자의 주체가 되는 회원 엔티티
 public class Member extends BaseEntity {
     @Column(unique = true)
     private String username;

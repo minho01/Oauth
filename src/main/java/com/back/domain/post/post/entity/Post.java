@@ -16,6 +16,7 @@ import java.util.Optional;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+// 게시글과 댓글 컬렉션을 함께 관리하는 애그리거트 역할의 엔티티
 public class Post extends BaseEntity {
 
     private String title;

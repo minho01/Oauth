@@ -2,6 +2,7 @@ package com.back.global.rsData;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+// 모든 API 응답을 같은 형태로 내려주기 위한 공통 래퍼
 public record RsData<T>(
         String msg,
         String resultCode,

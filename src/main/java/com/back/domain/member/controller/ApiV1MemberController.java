@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/members")
 @RequiredArgsConstructor
+// 회원가입/로그인 요청을 받아 서비스 계층으로 연결하는 API 진입점
 public class ApiV1MemberController {
     private final MemberService memberService;
 
@@ -30,6 +31,7 @@ public class ApiV1MemberController {
     ) {
     }
 
+    // 회원가입은 검증된 요청을 서비스로 전달하고, 응답은 DTO + RsData로 감싼다.
     @PostMapping("/join")
     public RsData<MemberDto> join(@RequestBody @Valid MemberJoinReqBody reqBody) {
 
@@ -54,6 +56,7 @@ public class ApiV1MemberController {
     ) {
     }
 
+    // 로그인은 username 조회 후 비밀번호를 확인하고, 성공 시 apiKey를 내려준다.
     @PostMapping("/login")
     public RsData<MemberLoginResBody> login(@RequestBody @Valid MemberLoginReqBody reqBody) {
 
