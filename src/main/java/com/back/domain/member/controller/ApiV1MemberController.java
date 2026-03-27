@@ -33,12 +33,6 @@ public class ApiV1MemberController {
     @PostMapping
     public RsData<MemberDto> join(@RequestBody @Valid MemberJoinReqBody reqBody) {
 
-        memberService.findByUsername(reqBody.username).ifPresent(
-                m -> {
-                    throw new ServiceException("409-1", "이미 사용중인 아이디입니다.");
-                }
-        );
-
         Member member = memberService.join(reqBody.username, reqBody.password, reqBody.nickname);
 
         return new RsData(
