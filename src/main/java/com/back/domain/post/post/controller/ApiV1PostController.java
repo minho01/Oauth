@@ -6,6 +6,7 @@ import com.back.domain.post.post.dto.PostDto;
 import com.back.domain.post.post.entity.Post;
 import com.back.domain.post.post.service.PostService;
 import com.back.global.exception.ServiceException;
+import com.back.global.rq.Rq;
 import com.back.global.rsData.RsData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,7 +28,7 @@ import java.util.List;
 public class ApiV1PostController {
 
     private final PostService postService;
-    private final MemberService memberService;
+    private final Rq rq;
 
     @GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary="글 다건 조회")
@@ -69,14 +70,9 @@ public class ApiV1PostController {
     // 글 작성자는 로그인 후 받은 apiKey로 식별한다.
     @PostMapping
     @Operation(summary="글 작성")
-    public RsData<PostWriteResBody> write(@RequestBody @Valid PostWriteReqBody reqBody,
-                                          @RequestHeader("Authorization") String apiKey) {
+    public RsData<PostWriteResBody> write(@RequestBody @Valid PostWriteReqBody reqBody) {
 
-        apiKey = apiKey.replace("Bearer ", "");
-
-        Member actor = memberService.findByApiKey(apiKey).orElseThrow(
-                ()-> new ServiceException("401-1", "유효하지 않은 API 키입니다.")
-        );
+        Member actor = rq.getActor(); // 인증된 사용자 정보 가져오기
 
         Post post = postService.write(actor, reqBody.title, reqBody.content);
         long postsCount = postService.count();
@@ -113,15 +109,10 @@ public class ApiV1PostController {
     @Transactional
     public RsData<PostModifyResBody> modify(
             @PathVariable int id,
-            @RequestBody @Valid PostModifyReqBody reqBody,
-            @RequestHeader("Authorization") String apiKey
+            @RequestBody @Valid PostModifyReqBody reqBody
     ) {
 
-        apiKey = apiKey.replace("Bearer ", "");
-
-        Member actor = memberService.findByApiKey(apiKey).orElseThrow(
-                ()-> new ServiceException("401-1", "유효하지 않은 API 키입니다.")
-        );
+        Member actor = rq.getActor(); // 인증된 사용자 정보 가져오기
 
         Post post = postService.findById(id).get();
 
@@ -143,14 +134,10 @@ public class ApiV1PostController {
     @DeleteMapping("/{id}")
     @Operation(summary="글 삭제")
     public RsData<Void> delete(
-            @PathVariable int id,
-            @RequestHeader("Authorization") String apiKey
+            @PathVariable int id
     ) {
 
-        apiKey = apiKey.replace("Bearer ", "");
-        Member actor = memberService.findByApiKey(apiKey).orElseThrow(
-                ()-> new ServiceException("401-1", "유효하지 않은 API 키입니다.")
-        );
+        Member actor = rq.getActor(); // 인증된 사용자 정보 가져오기
 
 Post post = postService.findById(id).get();
 
