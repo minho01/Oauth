@@ -4,13 +4,11 @@ import com.back.domain.member.dto.MemberDto;
 import com.back.domain.member.entity.Member;
 import com.back.domain.member.service.MemberService;
 import com.back.global.exception.ServiceException;
+import com.back.global.rq.Rq;
 import com.back.global.rsData.RsData;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/members")
@@ -18,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 // 회원가입/로그인 요청을 받아 서비스 계층으로 연결하는 API 진입점
 public class ApiV1MemberController {
     private final MemberService memberService;
+
+    private final Rq rq;
 
     record MemberJoinReqBody(
             String username,
@@ -73,5 +73,13 @@ public class ApiV1MemberController {
                 "200-1",
                 new MemberLoginResBody(actor.getApiKey())
         );
+    }
+
+    @GetMapping("/me")
+    public MemberDto me() {
+
+        Member actor = rq.getActor();
+        return new MemberDto(actor);
+
     }
 }
