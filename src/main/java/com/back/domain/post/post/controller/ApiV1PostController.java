@@ -30,8 +30,8 @@ public class ApiV1PostController {
     private final PostService postService;
     private final Rq rq;
 
-    @GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary="글 다건 조회")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "글 다건 조회")
     public List<PostDto> list() {
         List<Post> result = postService.findAll();
 
@@ -43,7 +43,7 @@ public class ApiV1PostController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary="글 단건 조회")
+    @Operation(summary = "글 단건 조회")
     public PostDto detail(@PathVariable int id) {
 
         Post post = postService.findById(id).get();
@@ -69,7 +69,7 @@ public class ApiV1PostController {
 
     // 글 작성자는 로그인 후 받은 apiKey로 식별한다.
     @PostMapping
-    @Operation(summary="글 작성")
+    @Operation(summary = "글 작성")
     public RsData<PostWriteResBody> write(@RequestBody @Valid PostWriteReqBody reqBody) {
 
         Member actor = rq.getActor(); // 인증된 사용자 정보 가져오기
@@ -105,7 +105,7 @@ public class ApiV1PostController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary="글 수정")
+    @Operation(summary = "글 수정")
     @Transactional
     public RsData<PostModifyResBody> modify(
             @PathVariable int id,
@@ -130,14 +130,14 @@ public class ApiV1PostController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary="글 삭제")
+    @Operation(summary = "글 삭제")
     public RsData<Void> delete(
             @PathVariable int id
     ) {
 
         Member actor = rq.getActor(); // 인증된 사용자 정보 가져오기
 
-Post post = postService.findById(id).get();
+        Post post = postService.findById(id).get();
 
         post.checkDelete(actor);
 
