@@ -116,9 +116,7 @@ public class ApiV1PostController {
 
         Post post = postService.findById(id).get();
 
-        if(!actor.equals(post.getAuthor())){
-            throw new ServiceException("403-1", "작성자만 게시물을 수정할 수 있습니다.");
-        }
+        post.checkModify(actor);
 
         postService.modify(id, reqBody.title, reqBody.content);
 
@@ -141,9 +139,7 @@ public class ApiV1PostController {
 
 Post post = postService.findById(id).get();
 
-        if(!actor.equals(post.getAuthor())){
-            throw new ServiceException("403-1", "작성자만 게시물을 삭제할 수 있습니다.");
-        }
+        post.checkDelete(actor);
 
         postService.deleteById(id);
 
