@@ -70,7 +70,9 @@ public class ApiV1PostController {
     @PostMapping
     @Operation(summary="글 작성")
     public RsData<PostWriteResBody> write(@RequestBody @Valid PostWriteReqBody reqBody,
-                                          @RequestParam String apiKey) {
+                                          @RequestHeader("Authorization") String apiKey) {
+
+        apiKey = apiKey.replace("Bearer ", "");
 
         Member actor = memberService.findByApiKey(apiKey).orElseThrow(
                 ()-> new ServiceException("401-1", "유효하지 않은 API 키입니다.")
@@ -111,10 +113,23 @@ public class ApiV1PostController {
     @Transactional
     public RsData<PostModifyResBody> modify(
             @PathVariable int id,
-            @RequestBody @Valid PostModifyReqBody reqBody
+            @RequestBody @Valid PostModifyReqBody reqBody,
+            @RequestHeader("Authorization") String apiKey
     ) {
 
-        Post post = postService.modify(id, reqBody.title, reqBody.content);
+        apiKey = apiKey.replace("Bearer ", "");
+
+        Member actor = memberService.findByApiKey(apiKey).orElseThrow(
+                ()-> new ServiceException("401-1", "유효하지 않은 API 키입니다.")
+        );
+
+        Post post = postService.findById(id).get();
+
+        if(!actor.equals(post.getAuthor())){
+            throw new ServiceException("403-1", "작성자만 게시물을 수정할 수 있습니다.");
+        }
+
+        postService.modify(id, reqBody.title, reqBody.content);
 
         return new RsData<>(
                 "%d번 게시물이 수정되었습니다.".formatted(post.getId()),
