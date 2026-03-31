@@ -69,6 +69,7 @@ public class Post extends BaseEntity {
         Comment comment = findCommentById(commentId).get();
         comment.update(content);
     }
+
     public void checkModify(Member actor) {
         if (!actor.equals(this.getAuthor())) {
             throw new ServiceException("403-1", "수정 권한이 없습니다.");
