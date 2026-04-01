@@ -1,8 +1,8 @@
-package com.back.domain.post.post.service;
+package com.back.domain.post.service;
 
 import com.back.domain.member.entity.Member;
-import com.back.domain.post.post.entity.Post;
-import com.back.domain.post.post.repository.PostRepository;
+import com.back.domain.post.entity.Post;
+import com.back.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

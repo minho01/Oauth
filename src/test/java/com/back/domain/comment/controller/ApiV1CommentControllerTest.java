@@ -1,10 +1,10 @@
-package com.back.domain.post.comment.controller;
+package com.back.domain.comment.controller;
 
 import com.back.domain.member.entity.Member;
 import com.back.domain.member.repository.MemberRepository;
-import com.back.domain.post.comment.entity.Comment;
-import com.back.domain.post.post.entity.Post;
-import com.back.domain.post.post.repository.PostRepository;
+import com.back.domain.comment.entity.Comment;
+import com.back.domain.post.entity.Post;
+import com.back.domain.post.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

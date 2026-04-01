@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 @Service
-public class AuthTokenService {
+class AuthTokenService {
 
     private final String secretKey = "abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890";
     private final long expireTime = 1000L * 60 * 60 * 24 * 365; // 1년
 
-    public String genAccessToken(Member member) {
+    String genAccessToken(Member member) {
         return Ut.jwt.toString(
                 secretKey,
                 expireTime,
@@ -21,5 +21,8 @@ public class AuthTokenService {
                         "name", member.getName()
                 )
         );
+    }
+    Map<String, Object> payloadOrNull(String jwt) {
+        return Ut.jwt.payloadOrNull(jwt, secretKey);
     }
 }
