@@ -75,10 +75,7 @@ public class ApiV1PostController {
 
         Member actor = rq.getActor(); // 인증된 사용자 정보 가져오기
 
-        // actor가 id, username만 가지고 있는 짝퉁 멤버
-
-        Member author = memberService.findById(actor.getId()).get();
-        Post post = postService.write(author, reqBody.title, reqBody.content);
+        Post post = postService.write(actor, reqBody.title, reqBody.content);
 
         return new RsData<>(
                 "%d번 게시물이 생성되었습니다.".formatted(post.getId()),
