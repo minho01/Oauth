@@ -57,8 +57,8 @@ public class Rq {
 
             if (payload != null) {
                 int id = (int) payload.get("id");
-                String name = (String) payload.get("name");
-                member = new Member(id, name);
+                String username = (String) payload.get("username");
+                member = new Member(id, username);
             }
         }
 
