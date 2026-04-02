@@ -74,8 +74,8 @@ public class ApiV1AdmMemberControllerTest {
 //                    .andExpect(jsonPath("$[%d].title".formatted(i)).value(post.getTitle()))
 //                    .andExpect(jsonPath("$[%d].content".formatted(i)).value(post.getContent()));
 //        }
-
     }
+
     @Test
     @DisplayName("회원 다건 조회, 권한이 없는 경우")
     void t2() throws Exception {
