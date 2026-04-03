@@ -51,12 +51,12 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
     private void authenticate(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
-        if(!request.getRequestURI().startsWith("/api/")) {
+        if (!request.getRequestURI().startsWith("/api/")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        if(List.of("/api/v1/members/join", "/api/v1/members/login").contains(request.getRequestURI())) {
+        if (List.of("/api/v1/members/join", "/api/v1/members/login").contains(request.getRequestURI())) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -72,7 +72,8 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
                 throw new ServiceException("401-2", "잘못된 형식의 인증데이터입니다.");
             }
 
-            String[] headerAuthorizationBits = authorizationHeader.split(" ", 3);            apiKey = authorizationHeader.replace("Bearer ", "");
+            String[] headerAuthorizationBits = authorizationHeader.split(" ", 3);
+            apiKey = authorizationHeader.replace("Bearer ", "");
 
             apiKey = headerAuthorizationBits[1];
             accessToken = headerAuthorizationBits.length == 3 ? headerAuthorizationBits[2] : "";
@@ -85,10 +86,11 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
         boolean isAccessTokenExists = !accessToken.isBlank();
         boolean isAccessTokenValid = false;
+        boolean isApiKeyExists = !apiKey.isBlank();
 
-        if (apiKey.isBlank()) {
-            throw new ServiceException("401-1", "apiKey가 존재하지 않습니다.");
-        }
+//        if (apiKey.isBlank()) {
+//            throw new ServiceException("401-1", "apiKey가 존재하지 않습니다.");
+//        }
 
         if (isAccessTokenExists) {
             Map<String, Object> payload = memberService.payloadOrNull(accessToken);
@@ -100,6 +102,11 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
                 member = new Member(id, username, nickname);
                 isAccessTokenValid = true;
             }
+        }
+
+        if(!isApiKeyExists) {
+            filterChain.doFilter(request, response);
+            return;
         }
 
         // accessToken으로 인증이 제대로 이루어지지 않은 경우
