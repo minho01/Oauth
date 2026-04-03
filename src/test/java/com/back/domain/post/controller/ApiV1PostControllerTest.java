@@ -186,10 +186,14 @@ public class ApiV1PostControllerTest {
     void t5() throws Exception {
         String title = "";
         String content = "내용입니다";
+        String apiKey = "user1";
 
         ResultActions resultActions = mvc
                 .perform(
                         post("/api/v1/posts")
+                                .header(
+                                        "Authorization", "Bearer %s".formatted(apiKey)
+                                )
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
                                         {
@@ -214,10 +218,12 @@ public class ApiV1PostControllerTest {
     void t6() throws Exception {
         String title = "제목입니다.";
         String content = "";
+        String apiKey = "user1";
 
         ResultActions resultActions = mvc
                 .perform(
                         post("/api/v1/posts")
+                                .header("Authorization", "Bearer %s".formatted(apiKey))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
                                         {
@@ -239,10 +245,12 @@ public class ApiV1PostControllerTest {
     void t7() throws Exception {
         String title = "제목입니다.";
         String content = "내용입니다";
+        String apiKey = "user1";
 
         ResultActions resultActions = mvc
                 .perform(
-                        post("/api/v1/posts")
+                        post( "/api/v1/posts")
+                                .header("Authorization", "Bearer %s".formatted(apiKey))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
                                         {
