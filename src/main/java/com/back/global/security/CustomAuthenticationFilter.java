@@ -124,9 +124,11 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
         // SecurityContextHolder에 인증데이터 저장
 
-        UserDetails user = new User(
+        UserDetails user = new SecurityUser(
+                member.getId(),
                 member.getUsername(),
                 member.getPassword(),
+                member.getNickname(),
                 List.of()
         );
 
