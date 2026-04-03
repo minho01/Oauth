@@ -129,12 +129,12 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
                 member.getUsername(),
                 member.getPassword(),
                 member.getNickname(),
-                List.of()
+                member.getAuthorities()
         );
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 user,
-                null,
+                user.getPassword(),
                 user.getAuthorities()
         );
 

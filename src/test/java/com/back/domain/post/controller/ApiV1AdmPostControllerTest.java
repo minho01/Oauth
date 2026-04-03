@@ -37,7 +37,7 @@ public class ApiV1AdmPostControllerTest {
     @DisplayName("글 전체 개수 조회, count")
     void t1() throws Exception {
 
-        Member actor = memberRepository.findByUsername("user1").get();
+        Member actor = memberRepository.findByUsername("admin").get();
 
         ResultActions resultActions = mvc
                 .perform(
@@ -68,11 +68,9 @@ public class ApiV1AdmPostControllerTest {
                 .andDo(print());
 
         resultActions
-                .andExpect(handler().handlerType(ApiV1AdmPostController.class))
-                .andExpect(handler().methodName("count"))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.resultCode").value("403-1"))
-                .andExpect(jsonPath("$.msg").value("권한이 없습니다"));
+                .andExpect(jsonPath("$.msg").value("권한이 없습니다."));
 
     }
 }

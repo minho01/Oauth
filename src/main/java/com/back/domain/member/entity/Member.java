@@ -5,7 +5,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -39,5 +41,13 @@ public class Member extends BaseEntity {
 
     public boolean isAdmin() {
         return "admin".equals(username);
+    }
+
+    public List<SimpleGrantedAuthority> getAuthorities() {
+        if (isAdmin()) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
     }
 }

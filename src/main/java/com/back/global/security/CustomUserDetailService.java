@@ -18,14 +18,18 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Member member = memberService.findByUsername(username).get();
+        Member member = memberService.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException("User not found with username: " + username)
+        );
 
-        return new SecurityUser(
+        SecurityUser user =  new SecurityUser(
                 member.getId(),
                 member.getUsername(),
-                member.getPassword(),
+                "",
                 member.getNickname(),
                 List.of()
         );
+
+        return user;
     }
 }
