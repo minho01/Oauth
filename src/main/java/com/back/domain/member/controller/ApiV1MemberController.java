@@ -88,6 +88,7 @@ public class ApiV1MemberController {
     public RsData<Void> logout() {
 
         rq.deleteCookie("apiKey");
+        rq.deleteCookie("accessToken");
 
         return new RsData(
                 "로그아웃 되었습니다.",
