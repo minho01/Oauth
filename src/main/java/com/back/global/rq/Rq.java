@@ -28,10 +28,22 @@ public class Rq {
 
 
     public Member getActor() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
 
-        return new Member(securityUser.getId(), securityUser.getUsername(), securityUser.getNickname());
+        return Optional.ofNullable(
+                        SecurityContextHolder
+                                .getContext().
+                                getAuthentication()
+                )
+                .map(Authentication::getPrincipal)
+                .filter(principal -> principal instanceof SecurityUser)
+                .map(principal -> (SecurityUser) principal)
+                .map(securityUser -> new Member(
+                        securityUser.getId(),
+                        securityUser.getUsername(),
+                        securityUser.getNickname()
+                ))
+                .orElseThrow(() -> new ServiceException("401-1", "로그인 후 이용해주세요."));
+
     }
 
     public void setHeader(String name, String value) {
